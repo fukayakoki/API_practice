@@ -1,6 +1,5 @@
 package hinatazaka46.smash;
 
-import com.mysql.cj.x.protobuf.MysqlxDatatypes;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
