@@ -18,13 +18,6 @@
 	</properties>
 
 
-	<repositories>
-<!--		<id>release</id>-->
-<!--		<name>release2</name>-->
-<!--	    <url>https://repo.maven.apache.org/maven2/</url>-->
-	</repositories>
-
-
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -49,11 +42,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.google.protobuf</groupId>
-			<artifactId>protobuf-java</artifactId>
-			<version>3.19.1</version>
 		</dependency>
 <!--		必要じゃなかったら消してね♡-->
 		<dependency>
