@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class SmashApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SmashApplication.class, String.valueOf(args));
+		SpringApplication.run(SmashApplication.class, args);
 	}
 
 }
