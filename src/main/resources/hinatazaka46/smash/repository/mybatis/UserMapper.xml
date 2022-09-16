@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="hinatazaka46.smash.repository.mybatis.UserMapper">
+
+    <resultMap id="User" type="hinatazaka46.smash.Domain.User">
+        <id property="id" column="ID"/>
+        <result property="userName" column="USERNAME"/>
+        <result property="password" column="PASSWORD"/>
+        <result property="image" column="IMAGE"/>
+    </resultMap>
+
+    <select id="getById" resultMap="User">
+        SELECT ID, USERNAME, PASSWORD, IMAGE
+        FROM USER
+        WHERE ID = #{userId}
+    </select>
+
+    <insert id="add" parameterType="hinatazaka46.smash.Domain.User" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO USER(
+        USERNAME,
+        PASSWORD,
+        IMAGE
+        )
+        VALUES
+        (
+        #{userName},
+        #{password},
+        #{image}
+        )
+    </insert>
+</mapper>
