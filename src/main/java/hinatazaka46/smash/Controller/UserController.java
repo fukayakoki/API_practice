@@ -1,6 +1,10 @@
 package hinatazaka46.smash.Controller;
 
-import java.util.Arrays;
+
+import hinatazaka46.smash.dto.CatDto;
+import hinatazaka46.smash.service.NyankoService;
+import java.util.List;
+import java.util.Random;
 import org.deeplearning4j.nn.api.OptimizationAlgorithm;
 import org.deeplearning4j.nn.conf.MultiLayerConfiguration;
 import org.deeplearning4j.nn.conf.NeuralNetConfiguration;
@@ -9,7 +13,9 @@ import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
 import org.deeplearning4j.nn.weights.WeightInit;
 import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.factory.Nd4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -35,32 +41,62 @@ public class UserController {
 
     private MultiLayerNetwork cnnModel;
     private double[] teacherFeatures;
+    private final NyankoService nyankoService;
 
-    public UserController() throws IOException {
+    public UserController(NyankoService nyankoService) throws IOException {
         this.cnnModel = buildSimpleCNN();
         this.teacherFeatures = getFeaturesFromResource("image.jpg");  // アプリ起動時に特徴量を計算
+        this.nyankoService = nyankoService;
     }
 
-    @PostMapping("/test")
+
+    @GetMapping("/type")
     @CrossOrigin(origins = "http://localhost:3000")
     @ResponseBody
-    public String test(){
-        return "ssss";
+    public CatDto getCat(@RequestParam(name = "numbers") int[] numbers) {
+        // 例として固定のデータを返却
+        return this.nyankoService.getCat(numbers);
+    }
+
+    @GetMapping("/all")
+    @CrossOrigin(origins = "http://localhost:3000")
+    @ResponseBody
+    public List<CatDto> getAllCat() {
+        // 例として固定のデータを返却
+        return this.nyankoService.getAllCat();
     }
 
     @PostMapping("/predict")
     @CrossOrigin(origins = "http://localhost:3000")
     @ResponseBody
-    public double[] predict(@RequestParam MultipartFile imageFile) throws IOException {
+    public int[] predict(@RequestParam MultipartFile imageFile) throws IOException {
         double[] inputFeatures = getFeaturesFromImage(imageFile.getInputStream());
 
+        int[] answer = new int[8];
         double[] differences = new double[teacherFeatures.length];
         for (int i = 0; i < teacherFeatures.length; i++) {
-            differences[i] = teacherFeatures[i] - inputFeatures[i];
+            differences[i] = Math.abs((teacherFeatures[i] - inputFeatures[i]) * 1000000);
         }
 
-        System.out.println("out::" + Arrays.toString(differences));
-        return differences;
+        answer[0] = (int) (100 - (differences[0] / 3));
+        answer[1] = (int) (100 - (differences[1] / 5));
+        answer[2] = (int) (20 + (differences[2] / 2));
+        answer[3] = (int) (100 - (differences[3] / 3));
+        answer[4] = (int) (100 - (differences[4] / 3));
+        answer[5] = (int) (30 + (differences[5] / 2));
+        answer[6] = (int) (100 - (differences[6] / 3));
+        answer[7] = (int) (20 + (differences[7] / 2));
+
+        Random random = new Random();
+        for (int i = 0; i < answer.length; i++) {
+            if (answer[i] <= 0) {
+                answer[i] = random.nextInt(31);  // 0から30までのランダムな数
+            } else if (answer[i] >= 90 & answer[i] != 100) {
+                answer[i] = 80 + random.nextInt(11);  // 80から90までのランダムな数
+            }
+        }
+
+        return answer;
     }
 
     private double getAverageOfSegment(double[] features, int start, int end) {
@@ -104,7 +140,7 @@ public class UserController {
     private INDArray imageToNDArray(BufferedImage image) {
         int width = image.getWidth();
         int height = image.getHeight();
-        INDArray array = Nd4j.createUninitialized(new int[]{1, 3, height, width});
+        INDArray array = Nd4j.createUninitialized(new int[] {1, 3, height, width});
 
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
@@ -113,9 +149,9 @@ public class UserController {
                 int g = (rgb >> 8) & 0xFF;
                 int b = rgb & 0xFF;
 
-                array.putScalar(new int[]{0, 0, j, i}, r);
-                array.putScalar(new int[]{0, 1, j, i}, g);
-                array.putScalar(new int[]{0, 2, j, i}, b);
+                array.putScalar(new int[] {0, 0, j, i}, r);
+                array.putScalar(new int[] {0, 1, j, i}, g);
+                array.putScalar(new int[] {0, 2, j, i}, b);
             }
         }
         return array.div(255);  // [0, 1]の範囲に正規化
