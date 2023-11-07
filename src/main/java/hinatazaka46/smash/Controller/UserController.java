@@ -58,7 +58,7 @@ public class UserController {
     }
 
     @GetMapping("/all")
-    @CrossOrigin(origins = "http://localhost:3000")
+    //@CrossOrigin(origins = "http://localhost:3000")
     @ResponseBody
     public List<CatDto> getAllCat() {
         // 例として固定のデータを返却
