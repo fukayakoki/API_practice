@@ -1,16 +1,16 @@
 server:
   port: 4646
 
-spring:
-  datasource:
-    url: jdbc:mysql://localhost:3306/smash
-    username: root
-    password: root
-    driver-class-name: com.mysql.cj.jdbc.Driver
-  servlet:
-    multipart:
-      max-file-size: 30MB
-      max-request-size: 30MB
-
-mybatis:
-  mapper-locations: classpath:hinatazaka46/smash/repository/mybatis/*.xml
+#spring:
+#  datasource:
+#    url: jdbc:mysql://localhost:3306/smash
+#    username: root
+#    password: root
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#  servlet:
+#    multipart:
+#      max-file-size: 30MB
+#      max-request-size: 30MB
+#
+#mybatis:
+#  mapper-locations: classpath:hinatazaka46/smash/repository/mybatis/*.xml
