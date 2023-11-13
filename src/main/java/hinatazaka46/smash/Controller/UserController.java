@@ -51,6 +51,7 @@ public class UserController {
 
     @GetMapping("/type")
     @CrossOrigin(origins = "https://ui-practice-amber.vercel.app")
+    //@CrossOrigin(origins = "http://localhost:3000")
     @ResponseBody
     public CatDto getCat(@RequestParam(name = "numbers") int[] numbers) {
         // 例として固定のデータを返却
@@ -58,8 +59,8 @@ public class UserController {
     }
 
     @GetMapping("/all")
-    @CrossOrigin(origins = "http://localhost:3000")
-    //@CrossOrigin(origins = "https://ui-practice-amber.vercel.app")
+    //@CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = "https://ui-practice-amber.vercel.app")
     @ResponseBody
     public List<CatDto> getAllCat() {
         System.out.println("/allにリクエストが来ました");
@@ -68,8 +69,8 @@ public class UserController {
     }
 
     @PostMapping("/predict")
-    @CrossOrigin(origins = "http://localhost:3000")
-    //@CrossOrigin(origins = "https://ui-practice-amber.vercel.app")
+    //@CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = "https://ui-practice-amber.vercel.app")
     @ResponseBody
     public int[] predict(@RequestParam MultipartFile imageFile) throws IOException {
         double[] inputFeatures = getFeaturesFromImage(imageFile.getInputStream());
