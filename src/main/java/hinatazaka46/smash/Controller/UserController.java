@@ -81,14 +81,19 @@ public class UserController {
             differences[i] = Math.abs((teacherFeatures[i] - inputFeatures[i]) * 1000000);
         }
 
-        answer[0] = (int) (100 - (differences[0] / 3));
-        answer[1] = (int) (100 - (differences[1] / 5));
-        answer[2] = (int) (20 + (differences[2] / 2));
-        answer[3] = (int) (100 - (differences[3] / 3));
-        answer[4] = (int) (100 - (differences[4] / 3));
-        answer[5] = (int) (30 + (differences[5] / 2));
-        answer[6] = (int) (100 - (differences[6] / 3));
-        answer[7] = (int) (20 + (differences[7] / 2));
+        Random rand = new Random(); // Random オブジェクトを作成
+
+        // 1, 2, または 3 のいずれかの数値をランダムに生成
+        int randomNumber = rand.nextInt(3) + 1;
+
+        answer[0] = (int) (100 - ((differences[0] * randomNumber) / 3));
+        answer[1] = (int) (100 - ((differences[1] * randomNumber) / 5));
+        answer[2] = (int) (20 + ((differences[2] * randomNumber) / 2));
+        answer[3] = (int) (100 - ((differences[3] * randomNumber) / 3));
+        answer[4] = (int) (100 - ((differences[4] * randomNumber) / 3));
+        answer[5] = (int) (30 + ((differences[5] * randomNumber) / 2));
+        answer[6] = (int) (100 - ((differences[6] * randomNumber) / 3));
+        answer[7] = (int) (20 + ((differences[7] * randomNumber) / 2));
 
         Random random = new Random();
         for (int i = 0; i < answer.length; i++) {
